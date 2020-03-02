@@ -1,0 +1,21 @@
+QMAKE_CXX.INCDIRS = \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/include/c++/8.2.0 \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/include/c++/8.2.0/arm-openstlinux_eglfs-linux-gnueabi \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/include/c++/8.2.0/backward \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/x86_64-openstlinux_eglfs_sdk-linux/usr/lib/arm-openstlinux_eglfs-linux-gnueabi/gcc/arm-openstlinux_eglfs-linux-gnueabi/8.2.0/include \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/x86_64-openstlinux_eglfs_sdk-linux/usr/lib/arm-openstlinux_eglfs-linux-gnueabi/gcc/arm-openstlinux_eglfs-linux-gnueabi/8.2.0/include-fixed \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/include
+QMAKE_CXX.LIBDIRS = \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/x86_64-openstlinux_eglfs_sdk-linux/usr/lib/arm-openstlinux_eglfs-linux-gnueabi/gcc/arm-openstlinux_eglfs-linux-gnueabi/8.2.0 \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/lib \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/lib/arm-openstlinux_eglfs-linux-gnueabi/8.2.0 \
+    /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/lib
+QMAKE_CXX.QT_COMPILER_STDCXX = 201402L
+QMAKE_CXX.QMAKE_GCC_MAJOR_VERSION = 8
+QMAKE_CXX.QMAKE_GCC_MINOR_VERSION = 2
+QMAKE_CXX.QMAKE_GCC_PATCH_VERSION = 0
+QMAKE_CXX.COMPILER_MACROS = \
+    QT_COMPILER_STDCXX \
+    QMAKE_GCC_MAJOR_VERSION \
+    QMAKE_GCC_MINOR_VERSION \
+    QMAKE_GCC_PATCH_VERSION
