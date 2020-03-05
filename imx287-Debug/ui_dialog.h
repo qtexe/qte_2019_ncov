@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialog.ui'
 **
-** Created: Mon Mar 2 09:44:47 2020
+** Created: Thu Mar 5 11:04:38 2020
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -73,7 +73,10 @@ public:
     QLabel *label_11;
     QLabel *lbe_update_time;
     QSpacerItem *horizontalSpacer;
-    QLabel *lbe_info;
+    QLabel *lbe_hostinfo;
+    QSpacerItem *horizontalSpacer_2;
+    QLabel *lbe_success;
+    QLabel *lbe_error;
     QWidget *widget_5;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout;
@@ -86,7 +89,8 @@ public:
     {
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
-        Dialog->resize(480, 319);
+        Dialog->resize(590, 319);
+        Dialog->setMaximumSize(QSize(1024, 600));
         horizontalLayout_3 = new QHBoxLayout(Dialog);
         horizontalLayout_3->setSpacing(2);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -410,6 +414,7 @@ public:
         font6.setFamily(QString::fromUtf8("\351\273\221\344\275\223"));
         font6.setPointSize(12);
         lbe_update_time->setFont(font6);
+        lbe_update_time->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 127);"));
 
         horizontalLayout_2->addWidget(lbe_update_time);
 
@@ -417,13 +422,38 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        lbe_info = new QLabel(Dialog);
-        lbe_info->setObjectName(QString::fromUtf8("lbe_info"));
-        lbe_info->setFont(font5);
-        lbe_info->setStyleSheet(QString::fromUtf8(""));
+        lbe_hostinfo = new QLabel(Dialog);
+        lbe_hostinfo->setObjectName(QString::fromUtf8("lbe_hostinfo"));
+        lbe_hostinfo->setFont(font3);
+        lbe_hostinfo->setStyleSheet(QString::fromUtf8("color: rgb(170, 0, 0);"));
 
-        horizontalLayout_2->addWidget(lbe_info);
+        horizontalLayout_2->addWidget(lbe_hostinfo);
 
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_2);
+
+        lbe_success = new QLabel(Dialog);
+        lbe_success->setObjectName(QString::fromUtf8("lbe_success"));
+        lbe_success->setFont(font5);
+        lbe_success->setStyleSheet(QString::fromUtf8("color: rgb(0, 170, 0);"));
+
+        horizontalLayout_2->addWidget(lbe_success);
+
+        lbe_error = new QLabel(Dialog);
+        lbe_error->setObjectName(QString::fromUtf8("lbe_error"));
+        lbe_error->setFont(font5);
+        lbe_error->setStyleSheet(QString::fromUtf8("color: rgb(255, 85, 0);"));
+
+        horizontalLayout_2->addWidget(lbe_error);
+
+        horizontalLayout_2->setStretch(0, 1);
+        horizontalLayout_2->setStretch(1, 10);
+        horizontalLayout_2->setStretch(2, 18);
+        horizontalLayout_2->setStretch(3, 1);
+        horizontalLayout_2->setStretch(4, 1);
+        horizontalLayout_2->setStretch(5, 1);
+        horizontalLayout_2->setStretch(6, 1);
 
         gridLayout->addLayout(horizontalLayout_2, 0, 0, 1, 3);
 
@@ -520,7 +550,9 @@ public:
         btn_update->setText(QApplication::translate("Dialog", "Update", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("Dialog", "\346\233\264\346\226\260\344\272\216", 0, QApplication::UnicodeUTF8));
         lbe_update_time->setText(QApplication::translate("Dialog", "2020-02-05 16:56:23", 0, QApplication::UnicodeUTF8));
-        lbe_info->setText(QApplication::translate("Dialog", "\347\212\266\346\200\201\346\255\243\345\270\270", 0, QApplication::UnicodeUTF8));
+        lbe_hostinfo->setText(QApplication::translate("Dialog", "192.168.1.111", 0, QApplication::UnicodeUTF8));
+        lbe_success->setText(QApplication::translate("Dialog", "ok:0", 0, QApplication::UnicodeUTF8));
+        lbe_error->setText(QApplication::translate("Dialog", "err:0", 0, QApplication::UnicodeUTF8));
         label_12->setText(QApplication::translate("Dialog", "\350\276\203\346\230\250\346\227\245", 0, QApplication::UnicodeUTF8));
         lbe_add_nowSevere->setText(QApplication::translate("Dialog", "+123", 0, QApplication::UnicodeUTF8));
         lbe_total_nowSevere->setText(QApplication::translate("Dialog", "00000", 0, QApplication::UnicodeUTF8));

@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
+    <width>590</width>
     <height>319</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1024</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -616,7 +622,7 @@ border-top-right-radius:10px</string>
       </widget>
      </item>
      <item row="0" column="0" colspan="3">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,10,18,1,1,1,1">
        <item>
         <widget class="QLabel" name="label_11">
          <property name="font">
@@ -643,6 +649,9 @@ border-top-right-radius:10px</string>
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(0, 0, 127);</string>
+         </property>
          <property name="text">
           <string>2020-02-05 16:56:23</string>
          </property>
@@ -662,7 +671,35 @@ border-top-right-radius:10px</string>
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="lbe_info">
+        <widget class="QLabel" name="lbe_hostinfo">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(170, 0, 0);</string>
+         </property>
+         <property name="text">
+          <string>192.168.1.111</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbe_success">
          <property name="font">
           <font>
            <family>黑体</family>
@@ -672,10 +709,28 @@ border-top-right-radius:10px</string>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">color: rgb(0, 170, 0);</string>
          </property>
          <property name="text">
-          <string>状态正常</string>
+          <string>ok:0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbe_error">
+         <property name="font">
+          <font>
+           <family>黑体</family>
+           <pointsize>12</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 85, 0);</string>
+         </property>
+         <property name="text">
+          <string>err:0</string>
          </property>
         </widget>
        </item>

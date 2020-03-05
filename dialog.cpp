@@ -5,6 +5,9 @@
 #include <QFile>
 #include <QDate>
 
+#include <QHostInfo>
+#include <QHostAddress>
+
 #include "cJSON.h"
 
 Dialog::Dialog(QWidget *parent) :
@@ -18,6 +21,18 @@ Dialog::Dialog(QWidget *parent) :
 //    this->setWindowFlags(Qt::FramelessWindowHint);                  //don't display titlebar
 //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);     //don't display titlebar
 
+    //获取本机计算机hostname,ipv4
+    /*
+    QString HostName = QHostInfo::localHostName();
+    QHostInfo info = QHostInfo::fromName(HostName);
+    QHostAddress ip_v4 = QHostAddress::LocalHost;
+    QString HostAddress = ip_v4.toString();
+    qDebug() << HostName << HostAddress;
+*/
+    qDebug() << GetLocalmachineIP();
+//    QString hostInfo = HostName + ":" + HostAddress;
+    ui->lbe_hostinfo->setText(GetLocalmachineIP());
+
     setLocation();
 
     timer = new QTimer(this);
@@ -25,7 +40,8 @@ Dialog::Dialog(QWidget *parent) :
     timer->start(1000); //ms = 1s
 
     updateTime = 5;
-    update_cnt = 0;
+    cnt_success = 0;
+    cnt_error = 0;
 
     manager = new QNetworkAccessManager(this);          //新建网络请求对象
     api = "http://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
@@ -89,7 +105,7 @@ void Dialog::getData(QByteArray str)
     root_obj = cJSON_Parse(str);   //创建JSON解析对象，返回JSON格式是否正确
     if (!root_obj)
     {
-        disInfo("JSONj");
+        disInfo("JSON format error");
         qDebug() << "json format error";
     }
     else
@@ -110,6 +126,9 @@ void Dialog::getData(QByteArray str)
         if(!data_obj)
         {
             qDebug() << "data json err";
+            cnt_error++;
+            QString error = "err:" + QString::number(cnt_error);
+            ui->lbe_error->setText(error);
         }
         else
         {
@@ -152,6 +171,9 @@ void Dialog::getData(QByteArray str)
 //        cJSON_Delete(data_obj);
         cJSON_Delete(root_obj);//释放内存
         disInfo("更新完成");
+        cnt_success++;
+        QString success = "ok:" + QString::number(cnt_success);
+        ui->lbe_success->setText(success);
     }
 }
 
@@ -191,7 +213,6 @@ void Dialog::update()
     cnt++;
     if(cnt == 60 * updateTime)   //60s = 1min
     {
-        update_cnt++;
         qDebug() << "start update data";
         disInfo("start update data");
         emit on_btn_update_clicked();//触发更新
@@ -201,7 +222,7 @@ void Dialog::update()
 
 void Dialog::disInfo(QString info)
 {
-        ui->lbe_info->setText(info);
+//    ui->lbe_info->setText(info);
 }
 
 void Dialog::on_btn_close_clicked()
@@ -247,4 +268,24 @@ void Dialog::setLocation()
         this->move(0, 0);
     else
         this->move(loc_x, loc_y);
+}
+
+//forexamle:192.168.1.111
+QString Dialog::GetLocalmachineIP()
+{
+    QString ipAddress;
+    QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
+    for(QHostAddress &addr : ipAddressesList)
+    {
+        // 找到不是本地ip，并且是ipv4协议，并且不是169开头的第一个地址
+        if(addr != QHostAddress::LocalHost && addr.protocol() == QAbstractSocket::IPv4Protocol && !addr.toString().startsWith("169"))
+        {
+            ipAddress = addr.toString();
+            break;
+        }
+    }
+    // if we did not find one, use IPv4 localhost
+    if (ipAddress.isEmpty())
+        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
+    return ipAddress;
 }

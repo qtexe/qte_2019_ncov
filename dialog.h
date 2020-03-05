@@ -9,6 +9,7 @@
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslSocket>
+#include <QNetworkInterface>
 
 #include <QFile>
 #include <QTimer>
@@ -33,6 +34,7 @@ public:
     void lbeDisplay(QLabel *lbe, int num);
     void disInfo(QString info);
     void setLocation();
+    QString GetLocalmachineIP();
 
 private slots:
     void on_btn_update_clicked();
@@ -54,7 +56,8 @@ private:
     QString filename;
     qint8 updateTime;     //默认5分钟更新一次
     QTimer *timer;
-    qint16 update_cnt;
+    qint16 cnt_success;
+    qint16 cnt_error;
     about ab_win;
 };
 
