@@ -4,40 +4,44 @@
 #include <QDebug>
 #include <QFile>
 #include <QDate>
-
 #include <QHostInfo>
 #include <QHostAddress>
-
-#include "cJSON.h"
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+
+//    system("./qt_run.sh");
+//    system("./qt_run.sh");
+//    qDebug() << "Screen Init Sucess!";
+//    qDebug() << "Connect WiFi.............";
+//    system("./connect_wifi.sh");
+    init();
     this->setWindowTitle("2019_ncov by wcc");
-    //don't display question flag
-//    this->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint);
-//    this->setWindowFlags(Qt::FramelessWindowHint);                  //don't display titlebar
-//    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);     //don't display titlebar
+    this->setWindowFlags(Qt::FramelessWindowHint);                  //don't display titlebar
+}
 
-    //获取本机计算机hostname,ipv4
-    /*
-    QString HostName = QHostInfo::localHostName();
-    QHostInfo info = QHostInfo::fromName(HostName);
-    QHostAddress ip_v4 = QHostAddress::LocalHost;
-    QString HostAddress = ip_v4.toString();
-    qDebug() << HostName << HostAddress;
-*/
-    qDebug() << GetLocalmachineIP();
-//    QString hostInfo = HostName + ":" + HostAddress;
-    ui->lbe_hostinfo->setText(GetLocalmachineIP());
+Dialog::~Dialog()
+{
+    delete ui;
+}
 
-    setLocation();
+void Dialog::init()
+{
+    iconInit();
+    QString ip = GetLocalmachineIP();
+
+//    setLocation();
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000); //ms = 1s
+
+    clk = new QTimer(this);
+    connect(clk, SIGNAL(timeout()), this, SLOT(clkUpdate()));
+    clk->start(1000); //ms = 1s
 
     updateTime = 5;
     cnt_success = 0;
@@ -47,192 +51,10 @@ Dialog::Dialog(QWidget *parent) :
     api = "http://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
     emit on_btn_update_clicked();
 }
-Dialog::~Dialog()
-{
-    delete ui;
-}
-
-void Dialog::on_btn_update_clicked()
-{
-//    timer->stop();
-    QString current_time =  QDateTime::currentDateTime().toString("yyyyMMdd_hh_mm_ss_zzz");
-//    QString timestamp_str;
-//    timestamp_str.setNum(timestamp, 10);
-    QUrl url(api);
-    disInfo("网络正常");
-    qDebug() << "get data:" + url.toString();
-    filename = "data_" +current_time + ".json";
-    file = new QFile(filename);
-
-    if(!file->open(QIODevice::WriteOnly))
-    {
-        qDebug() << "file open failed";
-        delete file;
-        file = 0;
-        return;
-    }
-
-    qDebug() << "network is online";
-    reply = manager->get(QNetworkRequest(url));     //发送get请求数据
-    //下载完成执行槽函数
-    connect(reply,SIGNAL(finished()),this,SLOT(httpFinished()));
-    //有可用的数据
-    connect(reply,SIGNAL(readyRead()),this,SLOT(httpReadyRead()));
-}
-
-void Dialog::parseData(QString filename)
-{
-    QFile file(filename);
-
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "file open failed";
-        return;
-    }
-    QByteArray allData = file.readAll();
-    file.close();
-//    qDebug() << allData;
-    getData(allData);
-    file.remove();            //删除文件
-    return;
-}
-
-void Dialog::getData(QByteArray str)
-{
-    cJSON *ret_obj;
-    cJSON *root_obj;
-
-    root_obj = cJSON_Parse(str);   //创建JSON解析对象，返回JSON格式是否正确
-    if (!root_obj)
-    {
-        disInfo("JSON format error");
-        qDebug() << "json format error";
-    }
-    else
-    {
-        disInfo("json format ok");
-        qDebug() << "json format ok";
-
-        ret_obj = cJSON_GetObjectItem(root_obj, "ret");
-        if(cJSON_IsNumber(ret_obj))
-        {
-            int ret = 1;
-            ret = ret_obj->valueint;
-//            qDebug() << ret_obj->valueint;
-        }
-
-        char *data_str = cJSON_GetObjectItem(root_obj, "data")->valuestring;
-        cJSON *data_obj = cJSON_Parse(data_str);
-        if(!data_obj)
-        {
-            qDebug() << "data json err";
-            cnt_error++;
-            QString error = "err:" + QString::number(cnt_error);
-            ui->lbe_error->setText(error);
-        }
-        else
-        {
-            qDebug() << "data json ok";
-            char *lastUpdateTime = cJSON_GetObjectItem(data_obj, "lastUpdateTime")->valuestring;
-            qDebug() << lastUpdateTime;
-            ui->lbe_update_time->setText(lastUpdateTime);
-            cJSON *chinaTotal_obj = cJSON_GetObjectItem(data_obj, "chinaTotal");
-
-            int chinaTotal_confirm    = cJSON_GetObjectItem(chinaTotal_obj, "confirm")->valueint;
-            int chinaTotal_heal       = cJSON_GetObjectItem(chinaTotal_obj, "heal")->valueint;
-            int chinaTotal_dead       = cJSON_GetObjectItem(chinaTotal_obj, "dead")->valueint;
-            int chinaTotal_nowConfirm = cJSON_GetObjectItem(chinaTotal_obj, "nowConfirm")->valueint;
-            int chinaTotal_suspect    = cJSON_GetObjectItem(chinaTotal_obj, "suspect")->valueint;
-            int chinaTotal_nowSevere  = cJSON_GetObjectItem(chinaTotal_obj, "nowSevere")->valueint;
-
-            ui->lbe_total_confirm->setNum(chinaTotal_confirm);
-            ui->lbe_total_heal->setNum(chinaTotal_heal);
-            ui->lbe_total_dead->setNum(chinaTotal_dead);
-            ui->lbe_total_nowConfirm->setNum(chinaTotal_nowConfirm);
-            ui->lbe_total_suspect->setNum(chinaTotal_suspect);
-            ui->lbe_total_nowSevere->setNum(chinaTotal_nowSevere);
-
-            cJSON *chinaAdd_obj = cJSON_GetObjectItem(data_obj, "chinaAdd");
-            int chinaAdd_confirm    = cJSON_GetObjectItem(chinaAdd_obj, "confirm")->valueint;
-            int chinaAdd_heal       = cJSON_GetObjectItem(chinaAdd_obj, "heal")->valueint;
-            int chinaAdd_dead       = cJSON_GetObjectItem(chinaAdd_obj, "dead")->valueint;
-            int chinaAdd_nowConfirm = cJSON_GetObjectItem(chinaAdd_obj, "nowConfirm")->valueint;
-            int chinaAdd_suspect    = cJSON_GetObjectItem(chinaAdd_obj, "suspect")->valueint;
-            int chinaAdd_nowSevere  = cJSON_GetObjectItem(chinaAdd_obj, "nowSevere")->valueint;
-
-            lbeDisplay(ui->lbe_add_confirm, chinaAdd_confirm);
-            lbeDisplay(ui->lbe_add_heal, chinaAdd_heal);
-            lbeDisplay(ui->lbe_add_dead, chinaAdd_dead);
-            lbeDisplay(ui->lbe_add_nowConfirm, chinaAdd_nowConfirm);
-            lbeDisplay(ui->lbe_add_suspect, chinaAdd_suspect);
-            lbeDisplay(ui->lbe_add_nowSevere, chinaAdd_nowSevere);
-        }
-//        cJSON_Delete(ret_obj);
-//        cJSON_Delete(data_obj);
-        cJSON_Delete(root_obj);//释放内存
-        disInfo("更新完成");
-        cnt_success++;
-        QString success = "ok:" + QString::number(cnt_success);
-        ui->lbe_success->setText(success);
-    }
-}
-
-void Dialog::lbeDisplay(QLabel *lbe, int num)
-{
-    if(num > 0)
-        lbe->setText("+" + QString::number(num));
-    else
-        lbe->setText(QString::number(num));
-}
-
-void Dialog::httpReadyRead()   //有可用数据
-{
-    if(file)
-        file->write(reply->readAll());  //如果文件存在，则写入文件
-}
-void Dialog::httpFinished()  //完成下载
-{
-    disInfo("完成下载");
-    file->flush();
-    file->close();
-    reply->deleteLater();
-    reply = 0;
-    delete file;
-    file = 0;
-    parseData(filename);
-}
-bool Dialog::isNetWorkOnline()
-{
-    QNetworkConfigurationManager mgr;
-    return mgr.isOnline();
-}
-
-void Dialog::update()
-{
-    static qint16 cnt = 0;
-    cnt++;
-    if(cnt == 60 * updateTime)   //60s = 1min
-    {
-        qDebug() << "start update data";
-        disInfo("start update data");
-        emit on_btn_update_clicked();//触发更新
-        cnt = 0;
-    }
-}
 
 void Dialog::disInfo(QString info)
 {
 //    ui->lbe_info->setText(info);
-}
-
-void Dialog::on_btn_close_clicked()
-{
-    this->close();
-}
-
-void Dialog::on_btn_about_clicked()
-{
-    this->ab_win.exec();
 }
 
 void Dialog::setLocation()
@@ -270,22 +92,20 @@ void Dialog::setLocation()
         this->move(loc_x, loc_y);
 }
 
-//forexamle:192.168.1.111
-QString Dialog::GetLocalmachineIP()
+void Dialog::on_btn_autoUpdate_clicked()
 {
-    QString ipAddress;
-    QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
-    for(QHostAddress &addr : ipAddressesList)
+    static bool flag = true;
+    flag = !flag;
+    if(flag)
     {
-        // 找到不是本地ip，并且是ipv4协议，并且不是169开头的第一个地址
-        if(addr != QHostAddress::LocalHost && addr.protocol() == QAbstractSocket::IPv4Protocol && !addr.toString().startsWith("169"))
-        {
-            ipAddress = addr.toString();
-            break;
-        }
+        ui->btn_autoUpdate->setText(QChar(0xf205));
+        qDebug() << "timer is start";
+        timer->start();
     }
-    // if we did not find one, use IPv4 localhost
-    if (ipAddress.isEmpty())
-        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-    return ipAddress;
+    else
+    {
+        ui->btn_autoUpdate->setText(QChar(0xf204));
+        qDebug() << "timer is stop";
+        timer->stop();
+    }
 }

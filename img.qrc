@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>my_sub.jpg</file>
+        <file>new_top.jpg</file>
+        <file>fontawesome-webfont.ttf</file>
     </qresource>
 </RCC>

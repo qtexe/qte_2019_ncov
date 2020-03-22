@@ -13,7 +13,7 @@ about::about(QWidget *parent) :
 
     this->setWindowTitle("about");
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setLocation();
+//    setLocation();
 
     ui->tb_about->setOpenLinks(false);
     connect(ui->tb_about, SIGNAL(anchorClicked(const QUrl&)), this, SLOT(anchorClickedSlot(const QUrl&)));

@@ -53,13 +53,21 @@ OBJECTS_DIR   = ./
 SOURCES       = ../main.cpp \
 		../dialog.cpp \
 		../cJSON.c \
-		../about.cpp qrc_img.cpp \
+		../about.cpp \
+		../dialog_slots.cpp \
+		../dialog_network.cpp \
+		../dialog_parse.cpp \
+		../dialog_display.cpp qrc_img.cpp \
 		moc_dialog.cpp \
 		moc_about.cpp
 OBJECTS       = main.o \
 		dialog.o \
 		cJSON.o \
 		about.o \
+		dialog_slots.o \
+		dialog_network.o \
+		dialog_parse.o \
+		dialog_display.o \
 		qrc_img.o \
 		moc_dialog.o \
 		moc_about.o
@@ -239,7 +247,11 @@ DIST          = /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-o
 		../about.h ../main.cpp \
 		../dialog.cpp \
 		../cJSON.c \
-		../about.cpp
+		../about.cpp \
+		../dialog_slots.cpp \
+		../dialog_network.cpp \
+		../dialog_parse.cpp \
+		../dialog_display.cpp
 QMAKE_TARGET  = qte_2019_ncov
 DESTDIR       = 
 TARGET        = qte_2019_ncov
@@ -623,7 +635,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../img.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-openstlinux_eglfs-linux-gnueabi/usr/lib/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../dialog.h ../cJSON.h ../about.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../main.cpp ../dialog.cpp ../cJSON.c ../about.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../main.cpp ../dialog.cpp ../cJSON.c ../about.cpp ../dialog_slots.cpp ../dialog_network.cpp ../dialog_parse.cpp ../dialog_display.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../dialog.ui ../about.ui $(DISTDIR)/
 
 
@@ -653,7 +665,9 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_img.cpp
 qrc_img.cpp: ../img.qrc \
 		/opt/st/stm32mp1/2.6-snapshot/sysroots/x86_64-openstlinux_eglfs_sdk-linux/usr/bin/rcc \
-		../my_sub.jpg
+		../fontawesome-webfont.ttf \
+		../my_sub.jpg \
+		../new_top.jpg
 	/opt/st/stm32mp1/2.6-snapshot/sysroots/x86_64-openstlinux_eglfs_sdk-linux/usr/bin/rcc -name img ../img.qrc -o qrc_img.cpp
 
 compiler_moc_predefs_make_all: moc_predefs.h
@@ -665,7 +679,8 @@ moc_predefs.h: /opt/st/stm32mp1/2.6-snapshot/sysroots/cortexa7t2hf-neon-vfpv4-op
 compiler_moc_header_make_all: moc_dialog.cpp moc_about.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_dialog.cpp moc_about.cpp
-moc_dialog.cpp: ../about.h \
+moc_dialog.cpp: ../cJSON.h \
+		../about.h \
 		../dialog.h \
 		moc_predefs.h \
 		/opt/st/stm32mp1/2.6-snapshot/sysroots/x86_64-openstlinux_eglfs_sdk-linux/usr/bin/moc
@@ -702,13 +717,14 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 ####### Compile
 
 main.o: ../main.cpp ../dialog.h \
+		../cJSON.h \
 		../about.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
 dialog.o: ../dialog.cpp ../dialog.h \
+		../cJSON.h \
 		../about.h \
-		ui_dialog.h \
-		../cJSON.h
+		ui_dialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog.o ../dialog.cpp
 
 cJSON.o: ../cJSON.c ../cJSON.h
@@ -717,6 +733,30 @@ cJSON.o: ../cJSON.c ../cJSON.h
 about.o: ../about.cpp ../about.h \
 		ui_about.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o about.o ../about.cpp
+
+dialog_slots.o: ../dialog_slots.cpp ../dialog.h \
+		../cJSON.h \
+		../about.h \
+		ui_dialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog_slots.o ../dialog_slots.cpp
+
+dialog_network.o: ../dialog_network.cpp ../dialog.h \
+		../cJSON.h \
+		../about.h \
+		ui_dialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog_network.o ../dialog_network.cpp
+
+dialog_parse.o: ../dialog_parse.cpp ../dialog.h \
+		../cJSON.h \
+		../about.h \
+		ui_dialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog_parse.o ../dialog_parse.cpp
+
+dialog_display.o: ../dialog_display.cpp ../dialog.h \
+		../cJSON.h \
+		../about.h \
+		ui_dialog.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog_display.o ../dialog_display.cpp
 
 qrc_img.o: qrc_img.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_img.o qrc_img.cpp

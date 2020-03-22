@@ -1,8 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'about.ui'
 **
-** Created: Mon Mar 2 09:58:09 2020
-**      by: Qt User Interface Compiler version 4.7.3
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,13 +10,10 @@
 #define UI_ABOUT_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QDialog>
-#include <QtGui/QHeaderView>
-#include <QtGui/QTextBrowser>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
@@ -30,12 +26,12 @@ public:
     void setupUi(QDialog *about)
     {
         if (about->objectName().isEmpty())
-            about->setObjectName(QString::fromUtf8("about"));
+            about->setObjectName(QStringLiteral("about"));
         about->resize(334, 380);
         verticalLayout = new QVBoxLayout(about);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         tb_about = new QTextBrowser(about);
-        tb_about->setObjectName(QString::fromUtf8("tb_about"));
+        tb_about->setObjectName(QStringLiteral("tb_about"));
         QFont font;
         font.setFamily(QString::fromUtf8("\351\273\221\344\275\223"));
         font.setPointSize(7);
@@ -51,7 +47,7 @@ public:
 
     void retranslateUi(QDialog *about)
     {
-        about->setWindowTitle(QApplication::translate("about", "Dialog", 0, QApplication::UnicodeUTF8));
+        about->setWindowTitle(QApplication::translate("about", "Dialog", nullptr));
         tb_about->setHtml(QApplication::translate("about", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -69,7 +65,7 @@ public:
 "<hr />\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">\302\267\345\205\254\344\274\227\345\217\267"
                         "</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/my_sub.jpg\" width=\"100\" height=\"100\" /></p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/my_sub.jpg\" width=\"100\" height=\"100\" /></p></body></html>", nullptr));
     } // retranslateUi
 
 };

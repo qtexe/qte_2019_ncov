@@ -26,7 +26,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         dialog.cpp \
     cJSON.c \
-    about.cpp
+    about.cpp \
+    dialog_slots.cpp \
+    dialog_network.cpp \
+    dialog_parse.cpp \
+    dialog_display.cpp
 
 HEADERS  += dialog.h \
     cJSON.h \
@@ -39,4 +43,3 @@ QT += network
 
 RESOURCES += \
     img.qrc
-
