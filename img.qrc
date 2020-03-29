@@ -3,5 +3,8 @@
         <file>my_sub.jpg</file>
         <file>new_top.jpg</file>
         <file>fontawesome-webfont.ttf</file>
+        <file>html_news.txt</file>
+        <file>html_rumor.txt</file>
+        <file>html_rumor_info.txt</file>
     </qresource>
 </RCC>

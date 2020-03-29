@@ -313,9 +313,9 @@ void Dialog::getArticelData(cJSON *article_arr)
 {
     qint8 article_size = cJSON_GetArraySize(article_arr);
 
-    QString tmp = QCoreApplication::applicationDirPath() + "/" + "html_news.txt";
-    QFile file(tmp);
-    //    QFile file("qrc:/html_news.txt");
+    //    QString tmp = QCoreApplication::applicationDirPath() + "/" + "html_news.txt";
+    //    QFile file(tmp);
+    QFile file(":/html_news.txt");
 
     if(!file.open(QIODevice::ReadOnly))
     {

@@ -220,6 +220,7 @@ Makefile: ../qte_2019_ncov.pro ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/wi
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/qt_config.prf \
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/toolchain.prf \
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/default_pre.prf \
@@ -408,6 +409,7 @@ Makefile: ../qte_2019_ncov.pro ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/wi
 ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/qt_config.prf:
 ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/win32-g++/qmake.conf:
 ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/toolchain.prf:
 ../../../Qt/Qt5.12.0/5.12.0/mingw73_64/mkspecs/features/default_pre.prf:

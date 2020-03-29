@@ -119,8 +119,11 @@ compiler_rcc_clean:
 	-$(DEL_FILE) debug\qrc_img.cpp
 debug/qrc_img.cpp: ../img.qrc \
 		../../../Qt/Qt5.12.0/5.12.0/mingw73_64/bin/rcc.exe \
+		../html_news.txt \
 		../fontawesome-webfont.ttf \
+		../html_rumor.txt \
 		../my_sub.jpg \
+		../html_rumor_info.txt \
 		../new_top.jpg
 	F:\Qt\Qt5.12.0\5.12.0\mingw73_64\bin\rcc.exe -name img ..\img.qrc -o debug\qrc_img.cpp
 
