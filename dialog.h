@@ -74,7 +74,10 @@ private:
 //    QString apiUrl_0 = "http://ip-api.com/json";    //ip location
     QString apiUrl_1 = "http://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
     QString apiUrl_2 = "http://view.inews.qq.com/g2/getOnsInfo?name=disease_other";
-    QString apiUrl_3 = "https://vp.fact.qq.com/loadmore?page=0";
+//    QString apiUrl_3 = "https://vp.fact.qq.com/loadmore?page=0";
+    //foreign data
+    QString apiUrl_3 = "http://view.inews.qq.com/g2/getOnsInfo?name=disease_foreign";
+
 //    QString apiUrl_4 = "https//vp.fact.qq.com/miniArtData?id=a2141851348ee5f3772c761e25bb57d7";
     qint8 apiID = 0;
 

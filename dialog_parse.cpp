@@ -50,7 +50,7 @@ void Dialog::parseData(QString filename)
 
 void Dialog::parseApi_0(QByteArray str)
 {
-//    qDebug() << str;
+    //    qDebug() << str;
 
     cJSON *root_obj;
     root_obj = cJSON_Parse(str);
@@ -70,7 +70,7 @@ void Dialog::parseApi_0(QByteArray str)
             ui->label_city->setText(city);
             ui->label_query->setText(query);
 
-//            qDebug() << city << query;
+            //            qDebug() << city << query;
             qDebug() << "get ip addr ok";
         }
     }
@@ -81,7 +81,7 @@ void Dialog::parseApi_1(QByteArray str)
 {
     cJSON *ret_obj;
     cJSON *root_obj;
-//    qDebug() << str;
+    //    qDebug() << str;
     root_obj = cJSON_Parse(str);   //创建JSON解析对象，返回JSON格式是否正确
     if (!root_obj)
     {
@@ -113,7 +113,7 @@ void Dialog::parseApi_1(QByteArray str)
         {
             qDebug() << "data1 json ok";
             QString lastUpdateTime = cJSON_GetObjectItem(data_obj, "lastUpdateTime")->valuestring;
-//            qDebug() << lastUpdateTime;
+            //            qDebug() << lastUpdateTime;
             ui->lbe_update_time->setText(lastUpdateTime.mid(11, 8));
 
             cJSON *chinaTotal_obj = cJSON_GetObjectItem(data_obj, "chinaTotal");
@@ -137,14 +137,14 @@ void Dialog::parseApi_1(QByteArray str)
             int chinaAdd_heal       = cJSON_GetObjectItem(chinaAdd_obj, "heal")->valueint;
             int chinaAdd_dead       = cJSON_GetObjectItem(chinaAdd_obj, "dead")->valueint;
             int chinaAdd_nowConfirm = cJSON_GetObjectItem(chinaAdd_obj, "nowConfirm")->valueint;
-//            int chinaAdd_suspect    = cJSON_GetObjectItem(chinaAdd_obj, "suspect")->valueint;
+            //            int chinaAdd_suspect    = cJSON_GetObjectItem(chinaAdd_obj, "suspect")->valueint;
             int chinaAdd_nowSevere  = cJSON_GetObjectItem(chinaAdd_obj, "nowSevere")->valueint;
 
             lbeDisplay(ui->lbe_add_confirm, chinaAdd_confirm);
             lbeDisplay(ui->lbe_add_heal, chinaAdd_heal);
             lbeDisplay(ui->lbe_add_dead, chinaAdd_dead);
             lbeDisplay(ui->lbe_add_nowConfirm, chinaAdd_nowConfirm);
-//            lbeDisplay(ui->lbe_add_suspect, chinaAdd_suspect);
+            //            lbeDisplay(ui->lbe_add_suspect, chinaAdd_suspect);
             lbeDisplay(ui->lbe_add_nowSevere, chinaAdd_nowSevere);
         }
         cJSON_Delete(root_obj);//释放内存
@@ -196,14 +196,51 @@ void Dialog::parseApi_2(QByteArray str)
 
             cJSON *cityStatis_obj = cJSON_GetObjectItem(data_obj, "cityStatis");
             getCityStatis(cityStatis_obj);
-
-            cJSON *getGlobalStatis_obj = cJSON_GetObjectItem(data_obj, "globalStatis");
-            getGlobalStatis(getGlobalStatis_obj);
         }
         qDebug() << "最新动态更新完成";
         cJSON_Delete(root_obj);//释放内存
     }
 }
+
+void Dialog::parseApi_3(QByteArray str)
+{
+    cJSON *ret_obj;
+    cJSON *root_obj;
+    root_obj = cJSON_Parse(str);   //创建JSON解析对象，返回JSON格式是否正确
+    if (!root_obj)
+    {
+        qDebug() << "json3 format error";
+    }
+    else
+    {
+        qDebug() << "json3 format ok";
+
+        ret_obj = cJSON_GetObjectItem(root_obj, "ret");
+        if(cJSON_IsNumber(ret_obj))
+        {
+            int ret = 1;
+            ret = ret_obj->valueint;        //0
+        }
+
+        char *data_str = cJSON_GetObjectItem(root_obj, "data")->valuestring;
+        cJSON *data_obj = cJSON_Parse(data_str);
+        if(!data_obj)
+        {
+            qDebug() << "data3 json err";
+            return;
+        }
+        else
+        {
+            qDebug() << "data3 json ok";
+            //history data
+            cJSON *getGlobalStatis_obj = cJSON_GetObjectItem(data_obj, "globalStatis");
+            getGlobalStatis(getGlobalStatis_obj);
+        }
+        qDebug() << "海外疫情数据更新完成";
+        cJSON_Delete(root_obj);//释放内存
+    }
+}
+/*
 void Dialog::parseApi_3(QByteArray str)
 {
     cJSON *root_obj = cJSON_Parse(str);   //创建JSON解析对象，返回JSON格式是否正确
@@ -271,12 +308,15 @@ void Dialog::parseApi_3(QByteArray str)
         cJSON_Delete(root_obj);//释放内存
     }
 }
-
+*/
 void Dialog::getArticelData(cJSON *article_arr)
 {
     qint8 article_size = cJSON_GetArraySize(article_arr);
+
     QString tmp = QCoreApplication::applicationDirPath() + "/" + "html_news.txt";
     QFile file(tmp);
+    //    QFile file("qrc:/html_news.txt");
+
     if(!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "文件打开失败";
@@ -308,14 +348,14 @@ void Dialog::getArticelData(cJSON *article_arr)
 
 void Dialog::getCityStatis(cJSON *cityStatis_obj)
 {
-//    int confirm = cJSON_GetObjectItem(cityStatis_obj, "confirm")->valueint;
+    //    int confirm = cJSON_GetObjectItem(cityStatis_obj, "confirm")->valueint;
     int zeroNowConfirm = cJSON_GetObjectItem(cityStatis_obj, "zeroNowConfirm")->valueint;
     int notZeroNowConfirm = cJSON_GetObjectItem(cityStatis_obj, "notZeroNowConfirm")->valueint;
 
     ui->lbe_notzeroCity->setNum(notZeroNowConfirm);
     ui->lbe_zeroCity->setNum(zeroNowConfirm);
 
-//    qDebug() << confirm << zeroNowConfirm << notZeroNowConfirm;
+    //    qDebug() << confirm << zeroNowConfirm << notZeroNowConfirm;
 }
 
 void Dialog::getGlobalStatis(cJSON *globalStatis_obj)
@@ -340,8 +380,8 @@ void Dialog::getGlobalStatis(cJSON *globalStatis_obj)
     lbeDisplay(ui->lbe_global_healAdd, healAdd);
     lbeDisplay(ui->lbe_global_deadAdd, deadAdd);
 
-//    qDebug() << nowConfirm << confirm << heal << dead;
-//    qDebug() << nowConfirmAdd << confirmAdd << healAdd << deadAdd;
+    //    qDebug() << nowConfirm << confirm << heal << dead;
+    //    qDebug() << nowConfirmAdd << confirmAdd << healAdd << deadAdd;
 }
 
 //china day history data
@@ -350,7 +390,7 @@ void Dialog::getChinaDayListData(cJSON *chinaDayList_arr)
     if(cJSON_IsArray(chinaDayList_arr))
     {
         qint8 arr_size = cJSON_GetArraySize(chinaDayList_arr);
-//        qDebug() << arr_size;
+        //        qDebug() << arr_size;
         for(qint8 i = 0; i < arr_size; i++)
         {
             cJSON *obj = cJSON_GetArrayItem(chinaDayList_arr, i);
@@ -365,8 +405,8 @@ void Dialog::getChinaDayListData(cJSON *chinaDayList_arr)
             QString deadRate = cJSON_GetObjectItem(obj, "deadRate")->valuestring;
             QString healRate = cJSON_GetObjectItem(obj, "healRate")->valuestring;
             QString date = cJSON_GetObjectItem(obj, "date")->valuestring;
-//            if(i == arr_size - 1)
-//                qDebug() << date << confirm << suspect << dead << heal << nowConfirm << nowSevere << importedCase << deadRate << healRate;
+            //            if(i == arr_size - 1)
+            //                qDebug() << date << confirm << suspect << dead << heal << nowConfirm << nowSevere << importedCase << deadRate << healRate;
         }
     }
 }
@@ -376,7 +416,7 @@ void Dialog::getChinaDayAddListData(cJSON *chinaDayAddList_arr)
     if(cJSON_IsArray(chinaDayAddList_arr))
     {
         qint8 arr_size = cJSON_GetArraySize(chinaDayAddList_arr);
-//        qDebug() << arr_size;
+        //        qDebug() << arr_size;
         for(qint8 i = 0; i < arr_size; i++)
         {
             cJSON *obj = cJSON_GetArrayItem(chinaDayAddList_arr, i);
@@ -391,7 +431,7 @@ void Dialog::getChinaDayAddListData(cJSON *chinaDayAddList_arr)
             QString date = cJSON_GetObjectItem(obj, "date")->valuestring;
             if(i == arr_size - 1)
             {
-//                qDebug() << date << confirm << suspect << dead << heal << importedCase << deadRate << healRate;
+                //                qDebug() << date << confirm << suspect << dead << heal << importedCase << deadRate << healRate;
                 lbeDisplay(ui->lbe_add_suspect, suspect);
             }
         }

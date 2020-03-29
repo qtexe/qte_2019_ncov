@@ -1,0 +1,11 @@
+debug/main.o
+debug/dialog.o
+debug/cJSON.o
+debug/about.o
+debug/dialog_slots.o
+debug/dialog_network.o
+debug/dialog_parse.o
+debug/dialog_display.o
+debug/qrc_img.o
+debug/moc_dialog.o
+debug/moc_about.o

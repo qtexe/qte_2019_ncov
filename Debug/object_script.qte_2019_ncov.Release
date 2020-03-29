@@ -1,0 +1,11 @@
+release/main.o
+release/dialog.o
+release/cJSON.o
+release/about.o
+release/dialog_slots.o
+release/dialog_network.o
+release/dialog_parse.o
+release/dialog_display.o
+release/qrc_img.o
+release/moc_dialog.o
+release/moc_about.o
